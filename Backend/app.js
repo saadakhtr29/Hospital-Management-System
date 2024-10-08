@@ -15,7 +15,8 @@ app.use(
   })
 );
 
-app.use(cookiesParser());
+app.use(cookies());
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
