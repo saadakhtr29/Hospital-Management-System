@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "dev": "nodemon server.js"
   },
   "author": "",
@@ -15,9 +15,10 @@
     "cloudinary": "^2.5.0",
     "cookie": "^0.7.2",
     "cookie-parser": "^1.0.0",
+    "cookie-signature": "^1.2.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
-    "express": "^2.5.11",
+    "express": "^4.21.1",
     "express-fileupload": "^1.5.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.7.0",
