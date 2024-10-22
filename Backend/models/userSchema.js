@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import validator from "validator";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema({
   firstName: {
@@ -25,16 +27,16 @@ const userSchema = new mongoose.Schema({
   nic: {
     type: String,
     required: true,
-    minlength: [12, "NIC must contain exact 12 digits" ],
-    maxlength: [12, "NIC must contain exact 12 digits" ]
+    minlength: [12, "NIC must contain exact 12 digits"],
+    maxlength: [12, "NIC must contain exact 12 digits"],
   },
   dob: {
     type: Date,
-    required: [true, "DOB is required" ],
+    required: [true, "DOB is required"],
   },
   gender: {
     type: String,
-    required: [true, "Gender is required" ],
+    required: [true, "Gender is required"],
     enum: ["Male", "Female", "Others"],
   },
   password: {
@@ -54,7 +56,24 @@ const userSchema = new mongoose.Schema({
   docAvatar: {
     public_id: String,
     url: String,
-  }
+  },
 });
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) {
+    next();
+  }
+  this.password = await bcrypt.hash(this.password, 10);
+});
+
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.generateJsonWebToken = function () {
+  return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
+    expiresIn: process.env.JWT_EXPIRES,
+  });
+};
 
 export const User = mongoose.model("Message", userSchema);
