@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    validate: [validator.isEmail, "Please Provide a valid Email"],
+    validate: [validator.isEmail, "Please provide a valid email"],
   },
   phone: {
     type: String,
@@ -59,6 +59,7 @@ const userSchema = new mongoose.Schema({
   },
 });
 
+// Password hashing before saving
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -66,14 +67,17 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
+// Compare entered password with hashed password
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
+// Generate JWT token
 userSchema.methods.generateJsonWebToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET_KEY, {
     expiresIn: process.env.JWT_EXPIRES,
   });
 };
 
-export const User = mongoose.model("Message", userSchema);
+// Correct model name
+export const User = mongoose.models.User || mongoose.model("User", userSchema);
