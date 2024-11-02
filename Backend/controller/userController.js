@@ -47,3 +47,7 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
     messsage: "User registered successfully",
   });
 });
+
+export const login = catchAsyncErrors(async(req, res, next) => {
+  const {email,  password, confirmPassword, role } = req.body;
+});
