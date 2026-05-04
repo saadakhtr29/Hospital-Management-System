@@ -544,4 +544,4 @@ For questions, suggestions, or support:
 
 ⭐ **Star this repository if you found it helpful!**
 
-Made with ❤️ by Saad(https://github.com/saadakhtr29)
+Made with ❤️ by Saad
